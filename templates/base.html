@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <!--Meta-->
+        <meta charset="UTF-8">
+        <meta lang="en">
+        {% if title %}
+        <title>{{ title }} - Your Reminder Assistant</title>
+        {% else %}
+        <title>MessageApp - Your Reminder Assistant</title>
+        {% endif %}
+        <!--Mobile Friendly-->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--bootstrap-->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+        <!-- Latest compiled JavaScript -->
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+        <style>
+            a.headerlink {
+            color: #A5DF00;
+            text-decoration: none;
+            padding: 10px;
+            font-size: 20px;
+            }
+            a:hover.headerlink {
+            color: #0080FF;#4183C4;
+            text-decoration: underline;
+            }
+            .header {
+            background: white;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            display: flex;
+            height: 50px;
+            line-height: 24px;
+            position: relative;
+            text-align: center;
+            z-index: 2;
+            }
+            .header .container {
+            align-items: stretch;
+            box-shadow: 0 1px 0 rgba(211,214,219,0.3);
+            display: flex;
+            width: 100%;
+            }
+            .header-left {
+            align-items: stretch;
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+            overflow-x: auto;
+            white-space: nowrap;
+            }
+            .header-toggle {
+            display: none;
+            }
+            .header-item {
+            align-items: center;
+            display: flex;
+            padding: 10px;
+            }
+            .header-right {
+            display: flex;
+            }
+            .header .title {
+            font-size: 1.5em;
+            }
+            .title {
+            color: #222324;
+            font-size: 28px;
+            line-height: 1;
+            }
+            .container {
+            margin: 0 auto;
+            max-width: 960px;
+            position: relative;
+            }
+            .huge {
+            font-size: 2em;
+            color: black;
+            }       
+            a {
+            color: #1fc8db;
+            cursor: pointer;
+            text-decoration: none;
+            transition: none 86ms ease-out;
+            }
+            a:active {
+            text-decoration: none;
+            }
+            a:hover {
+            text-decoration: none;
+            }
+            .form_container {
+            max-width: 600px;
+            margin: 10px auto 10px;
+            border:1px solid #9C27B0;
+            border-radius:20px;
+            padding-top:30px;
+            padding-bottom:30px;
+            text-align: center;
+            font-family: Georgia;
+            font-size: 18px;
+            }
+        </style>
+    </head>
+    <body>
+        <header class="header">
+            <div class="container">
+                <div class="header-left">
+                    <a class="header-item" href="/">
+                        <h3 class="title">P</h3>
+                    </a>
+                </div>
+                <span class="header-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+                </span>
+                <div class="header-right header-menu">
+                    <span class="header-item">
+                    <a href="/reminder">Your Reminder</a>
+                    </span>
+                    <span class="header-item">
+                    <a href="https://github.com/amitt001/PyReport">GitHub</a>
+                    </span>
+                    <!--<span class="header-item">
+                    <a href="/about">About</a>-->
+                    </span>
+                </div>
+            </div>
+        </header>
+        <div style="height: 100%;width: 100%; text-align: center;">
+        {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>

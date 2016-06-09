@@ -1,0 +1,67 @@
+"""msgapp app views"""
+
+from flask import render_template, request, url_for, redirect
+
+import utils
+import cron
+from models import User, Reminder, db
+
+
+@utils.catch_exc
+def index():
+    """Home Page. Takes phonenumber through POST, serves home through GET."""
+    if request.method == 'GET':
+        return render_template('msgapp/index.html')
+
+    elif request.method == 'POST':
+        name = request.form['name']
+        phone = request.form['phone']
+        country_code = request.form['country_code']
+        timezone = request.form['timezone']
+        start_time = request.form['start_time']
+        end_time = request.form['end_time']
+
+        if not utils.valid_info(name, phone):
+            raise Exception("Invalid phone or name", 404)
+
+        #check user already exists
+        if utils.number_exists(phone):
+            return redirect(url_for('info', phone=phone))
+        else:
+            u = User(name=name, phone=phone,
+                    country_code=country_code, 
+                    timezone=timezone, night_start=start_time,
+                    night_end=end_time)
+            db.session.add(u)
+            db.session.commit()
+            cron_job = cron.create(phone)
+
+        return redirect(url_for('index'))
+
+
+@utils.catch_exc
+def reminder():
+    """Get reminder details of the user"""
+    if request.method == 'GET':
+        return render_template('msgapp/reminder_info.html')
+
+    if request.method == 'POST':
+        phone = request.form['phone']
+        if not phone:
+            raise Exception("Invalid Phone number", 404)
+        return redirect(url_for('info', phone=phone))
+
+
+#@utils.catch_exc
+def info():
+    phone = request.args.get('phone')
+    reminder = Reminder.query.filter_by(phone=phone).all()
+    if reminder:
+        user = User.query.filter_by(phone=phone).first()
+        columns = utils.process_reminder_info(reminder[0])
+        return render_template(
+            "msgapp/info.html",
+            name=user.name,
+            phone=user.phone,
+            columns=columns,
+            reminders=[r.__dict__ for r in reminder])
