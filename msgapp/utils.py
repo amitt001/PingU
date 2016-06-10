@@ -1,6 +1,5 @@
 """Small utility functions"""
 
-#from app import db
 import traceback
 from functools import wraps
 
@@ -8,9 +7,12 @@ from models import User, Reminder
 
 
 def number_exists(number):
+    """check if user with thsi phone number already exists"""
     return User.query.filter_by(phone=number).first() != None
 
+
 def valid_info(name, phone):
+    """check name and phone are valid"""
     _valid = True
     if not name or not phone:
         _valid = False
@@ -20,25 +22,15 @@ def valid_info(name, phone):
 
 
 def process_reminder_info(reminder):
+    """Get columns from reminder obj"""
     columns = reminder.__table__.columns.keys()
     for col in ['phone', 'id', 'updated_on']:
         columns.remove(col)
     return columns
 
 
-# def process_reminder(reminder):
-#     data = {'columns': [], 'info': []}
-#     columns = reminder[0].__table__.columns.keys()
-#     for col in columns:
-#         if col == 'id':
-#             continue
-#         data['columns'].append(' '.join(col.capitalize().split('_')))
-#         data['info'].append()
-#     columns.rem
-
-
-
 def catch_exc(f):
+    """exception catcher generator"""
     @wraps(f)
     def _catch_exc(*args, **kwargs):
         try:

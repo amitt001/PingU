@@ -64,9 +64,6 @@ def right_time(user):
     start_time = float(user.night_start.replace(':', '.'))
     end_time = float(user.night_end.replace(':', '.'))
     local_time = local_from_timezone(timezone)
-    print "--------------------"
-    with open('/home/amit/Codes/cops/pvtassist/msgapp/data.txt', 'w') as f:
-        f.write(str(start_time) + " " + str(end_time) + " " + str(local_time) + " " + str(local_time >= start_time or local_time < end_time))
     return not (local_time >= start_time or local_time < end_time)
 
 

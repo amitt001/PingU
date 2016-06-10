@@ -1,11 +1,12 @@
 """Module to manage crons"""
 
+from os import path
 from crontab import CronTab
 
-_CRON = CronTab(user=True)
-_PYTHON_PATH = '/home/amit/venv/bin/python'
-_MESSENGER_PATH = '/home/amit/Codes/cops/pvtassist/msgapp/messenger.py'
 
+_CRON = CronTab(user=True)
+_PYTHON_PATH = os.system("which python")
+_MESSENGER_PATH = path.join(path.abspath(path.dirname('.')), 'messenger.py')
 
 def create(phone):
     base = _PYTHON_PATH + " " + _MESSENGER_PATH + " "
