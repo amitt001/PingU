@@ -4,10 +4,11 @@ from crontab import CronTab
 
 _CRON = CronTab(user=True)
 _PYTHON_PATH = '/home/amit/venv/bin/python'
+_MESSENGER_PATH = '/home/amit/Codes/cops/pvtassist/msgapp/messenger.py'
 
 
 def create(phone):
-    base = _PYTHON_PATH + " /home/amit/Codes/cops/scapp/msgapp/messanger.py "
+    base = _PYTHON_PATH + " " + _MESSENGER_PATH + " "
     command =  base + phone
     job = _CRON.new(command=command)
     job.set_comment(phone)

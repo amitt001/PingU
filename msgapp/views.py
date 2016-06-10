@@ -30,7 +30,8 @@ def index():
         else:
             u = User(name=name, phone=phone,
                     country_code=country_code, 
-                    timezone=timezone, night_start=start_time,
+                    timezone=timezone, 
+                    night_start=start_time,
                     night_end=end_time)
             db.session.add(u)
             db.session.commit()
@@ -52,7 +53,7 @@ def reminder():
         return redirect(url_for('info', phone=phone))
 
 
-#@utils.catch_exc
+@utils.catch_exc
 def info():
     phone = request.args.get('phone')
     reminder = Reminder.query.filter_by(phone=phone).all()
@@ -65,3 +66,5 @@ def info():
             phone=user.phone,
             columns=columns,
             reminders=[r.__dict__ for r in reminder])
+    else:
+        return render_template("msgapp/info.html")

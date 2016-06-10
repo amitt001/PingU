@@ -17,3 +17,6 @@ How to run?
 
 * python app.py
 
+
+During create don't send message right away because user remebers his name at start time
+

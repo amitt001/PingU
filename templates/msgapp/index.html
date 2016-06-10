@@ -5,26 +5,33 @@
    <form method="post" action="" autocomplete="off">
       <input class="form-control input-lg" type="text" name ="name" placeholder="Name"></br>
       <input class="form-control input-lg" type="phone" name ="phone" placeholder="Phone Number with country code. Ex +919191919000" ></br>
-      <div style="text-align: center;">
-         <h3>Night Mode:</h3>
-         </br>
-         <div style="display: flex; justify-content: space-between; padding: 0 10px 0 10px;">
-            <h3>Start</h3>
-            <input class="input-lg col-xs-3" type="text" name ="start_time" value="10:00 PM" onclick="this.select()">
-            <h3>End</h3>
-            <input class="input-lg col-xs-3" type="text" name ="end_time" value="6:00 AM" onclick="this.select()">
-         </div>
-      </div>
-      <div style="display: flex; justify-content: space-between; padding: 0 10px 0 10px;">
-         <h3>Country Code</h3>
-         <input class="input-lg col-xs-2" type="text" name ="country_code" value="+91" onclick="this.select()">
-         <h3>Timezone</h3>
-         <select name="timezone">
-            <option value="US/Eastern">Asia/Delhi</option>
+            <div style="text-align: center;display: flex; justify-content: space-between; padding: 0 10px 0 10px;">
+         <div style="display: inline;">
+         <h3>Timezone </h3>
+         <select class="form-control input-lg" name="timezone">
+            <option value="Asia/Kolkata">Asia/Kolkata</option>
             <option value="US/Eastern">US/Eastern</option>
             <option value="Asia/Kathmandu">Asia/Kathmandu</option>
             <option value="Africa/Johannesburg">Africa/Johannesburg</option>
          </select>
+         </div>
+         <div style="display: inline;">
+         <h3>Country Code</h3>
+         <input style="text-align: center;" class="form-control input-lg" type="text" name ="country_code" value="+91" onclick="this.select()">
+         </div>
+      </div>
+      <div style="text-align: center;">
+         <h3>Night Mode:</h3>
+         <div style="display: flex; justify-content: space-between; padding: 0 10px 0 10px;">
+         <div style="display: inline;">
+            <h3>Start</h3>
+            <input class="form-control input-lg col-s-3" type="time" name ="start_time" value="22:00" onclick="this.select()">
+            </div>
+            <div style="display: inline;">
+            <h3>End</h3>
+            <input class="form-control input-lg col-s-3" type="time" name ="end_time" value="06:00" onclick="this.select()">
+            </div>
+         </div>
       </div>
       </br>
       <div style="float:center;text-align:center">

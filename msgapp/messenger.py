@@ -23,7 +23,7 @@ def send_reminder(to, body):
     counter = 0
     success = False
 
-    #Retry 5 times
+    #in case an error occurs retry _RETRY times
     error_code, error_message = None, None
     while counter <= _RETRY  and success is False:
         counter += 1
@@ -54,32 +54,40 @@ def local_from_timezone(tymzone):
 
 
 def right_time(user):
-    """check for the right time to remind"""
+    """
+    Checks whether its right to send reminder. First
+    users local time is retrived from user's timezone
+            
+        user: User model.
+    """
     timezone = user.timezone
-    start_time = user.night_start
-    end_time = user.night_end
-    hr_min = local_from_timezone(timezone)
-    return not (hr_min >= start_time and hr_min <= end_time)
-    
+    start_time = float(user.night_start.replace(':', '.'))
+    end_time = float(user.night_end.replace(':', '.'))
+    local_time = local_from_timezone(timezone)
+    print "--------------------"
+    with open('/home/amit/Codes/cops/pvtassist/msgapp/data.txt', 'w') as f:
+        f.write(str(start_time) + " " + str(end_time) + " " + str(local_time) + " " + str(local_time >= start_time or local_time < end_time))
+    return not (local_time >= start_time or local_time < end_time)
 
 
 if __name__ == '__main__' and __package__ is None:
     
     #add parent directory in path
     sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
-    print path.dirname(path.dirname(path.abspath(__file__)))
+    
     #set flaslkapp context for sqlalchemy
     from app import app
     db.app = app
-    with open("/home/amit/Codes/cops/scapp/msgapp/test.txt", "w") as f:
-        f.write("test")
+
     phone = sys.argv[1]
     user = User.query.filter_by(phone=phone).first()
     if right_time(user): 
         message = "Hello there! Your name is " + user.name
-        success, error = send_reminder(phone, message)
+        phone_num = user.country_code + phone
+        success, error = send_reminder(phone_num, message)
+
         rem = Reminder(phone, success, error, message)
         db.session.add(rem)
         db.session.commit()
     else:
-        print("Not right time. Good Night")
+        print("Not a right time. Good Night")
