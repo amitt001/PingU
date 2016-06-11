@@ -7,17 +7,15 @@
         {% if title %}
         <title>{{ title }} - Your Reminder Assistant</title>
         {% else %}
-        <title>MessageApp - Your Reminder Assistant</title>
+        <title>PingU - Your Reminder Assistant</title>
         {% endif %}
         <!--Mobile Friendly-->
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!--bootstrap-->
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-
         <!-- jQuery library -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-
         <!-- Latest compiled JavaScript -->
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <style>
@@ -106,6 +104,12 @@
             font-family: Georgia;
             font-size: 18px;
             }
+            .centercontainer {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-40%);
+            }
         </style>
     </head>
     <body>
@@ -113,7 +117,7 @@
             <div class="container">
                 <div class="header-left">
                     <a class="header-item" href="/">
-                        <h3 class="title">P</h3>
+                        <h3 class="title">PingU</h3>
                     </a>
                 </div>
                 <span class="header-toggle">
@@ -123,19 +127,19 @@
                 </span>
                 <div class="header-right header-menu">
                     <span class="header-item">
-                    <a href="/reminder">Your Reminder</a>
+                    <a href="/reminder">Your Reminders</a>
                     </span>
                     <span class="header-item">
-                    <a href="https://github.com/amitt001/PyReport">GitHub</a>
+                    <a href="https://github.com/amitt001/pingU">GitHub</a>
                     </span>
                     <!--<span class="header-item">
-                    <a href="/about">About</a>-->
+                        <a href="/about">About</a>-->
                     </span>
                 </div>
             </div>
         </header>
         <div style="height: 100%;width: 100%; text-align: center;">
-        {% block content %}{% endblock %}
+            {% block content %}{% endblock %}
         </div>
     </body>
 </html>

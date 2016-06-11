@@ -1,11 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="container-fluid form_container">
-<form method="post" action="" autocomplete="off">
-<div style="display: inline;">
-    <input class="input-lg" type="text" name ="phone" placeholder="phone">
-    <input type="submit" class="btn btn-success btn-lg" name="info" value="Info">
+
+<div class="centercontainer">
+    <span style="color: #5bc0de; font-size: 48px;">pingU</span>
+    <div class="container-fluid form_container" style="border: 5px solid transparent;">
+        <form class="form-inline" method="post" name="infoform" onsubmit="return validate()" action="" autocomplete="off">
+            <input class="form-control input-lg" type="text" name ="phone" placeholder="Your Mobile Number" onfocus="clearInput()">
+            <input type="submit" class="btn btn-success btn-lg" name="info" value="Info">
+        </form>
+        <div id="errphone"> </div>
     </div>
-</form>
 </div>
+
+<script type="text/javascript">
+  function validate() {
+    var phonenum = infoform.phone.value
+    if(isNaN(phonenum)){
+        var msg = "Invalid Number. Mobile number should only contain digits."
+        document.getElementById('errphone').innerHTML=msg;
+        return false;
+    }
+    if(phonenum.length <= 9){
+        var msg = "Invalid Number. Mobile number should be 10 or more characters"
+        document.getElementById('errphone').innerHTML=msg;
+        return false;
+    }
+  }
+  function clearInput() {
+    document.getElementById('errphone').innerHTML="";
+  }
+</script>
+
 {% endblock %}

@@ -1,15 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-<h1 >{{ name }}'s Reminders</h1>
-<h3>{{ phone }}</h3>
+<div>
+<h2>{{ name }}'s Reminder - {{ phone }}</h2>
+</div>
+<h3>Running for: {{ hours }} hours</h3>
 <br>
 <div style="margin-left:15px;margin-right:15px;">
 <table class="table table-bordered table-hover">
+
     {% if reminders %}
         {% for column in columns %}
             <th class="info" style="text-align: center; font-size: 150%;">
-                {% set col_name = column.split('_') %}
-                {{ col_name|join(" ")|title() }}
+                {% if column == 'created_on' %}
+                    Sent On(utc)
+                {% else %}
+                    {% set col_name = column.split('_') %}
+                    {{ col_name|join(" ")|title() }}
+                {% endif %}
             </th>
         {% endfor %}
         {% for reminder in reminders %}
@@ -17,7 +24,9 @@
                 {% for col in columns %}
                 <td>
                     {% if reminder.get(col, None) == True %}
-                        {{ 'Success' }}
+                        Success
+                    {% elif reminder.get(col, None) == False %}
+                        Fail
                     {% else %}
                         {{ reminder.get(col, None) or 'None' }}
                     {% endif %}
@@ -26,7 +35,7 @@
             </tr>
         {% endfor %}
     {% else %}
-    <p>No stats logs</p>
+    <span class="centercontainer" style="font-size: 20px;">{{ norecord_msg }}</span>
     {% endif %}
 
 </table>

@@ -1,31 +1,31 @@
 
 import sys
 from os import path
-from datetime import datetime
-from pytz import timezone
 
+import twilio
 from twilio.rest import TwilioRestClient
 
-import cron
+import utils
 from models import User, Reminder, db
 
 
+#Twilio test credentials
 _FROM = "+15005550006"
 _ASID = "ACde3d9f8915e7be40163284f38b02849b"
 _TOKEN = "9468671c1999c05c0e4af55bec5bdf6e"
-_RETRY = 1
+#no retries in case of exception
+_RETRY = 5
 
-#not at night, retry 5 times, log error and tell how many hours it has been running
 
 def send_reminder(to, body):
-    #send message
+    """Send message using twilio"""
     client = TwilioRestClient(_ASID, _TOKEN)
-    counter = 0
+    counter = 1
     success = False
 
-    #in case an error occurs retry _RETRY times
+    #Try resending an SMS if it fails, but retry no more than 5 times.
     error_code, error_message = None, None
-    while counter <= _RETRY  and success is False:
+    while counter <= _RETRY and success is False:
         counter += 1
         try:
             message = client.messages.create(to=to, from_=_FROM,
@@ -34,23 +34,12 @@ def send_reminder(to, body):
                 success = True
             error_code = message.error_code
             error_message = message.error_message
-        except Exception as e:
-            pass
-    return (error_code == None, error_message or "")
+        except twilio.rest.exceptions.TwilioRestException as e:
+            error_code = e.code
+            error_message = e.msg
 
-
-def local_from_timezone(tymzone):
-    """get users loca time from his timezone
-
-        US/Eastern
-        Asia/Kathmandu
-        Africa/Johannesburg
-    """
-
-    tz = timezone(tymzone)
-    tz_time = datetime.now(tz)
-    #return tz_time.strftime('%H:%M:%S')
-    return float(str(tz_time.time().hour) + "." + str(tz_time.time().minute))
+    print error_code, error_message
+    return (error_code is None, error_message or "")
 
 
 def right_time(user):
@@ -63,7 +52,10 @@ def right_time(user):
     timezone = user.timezone
     start_time = float(user.night_start.replace(':', '.'))
     end_time = float(user.night_end.replace(':', '.'))
-    local_time = local_from_timezone(timezone)
+
+    #Get user's timezon's local time
+    local_time = utils.local_from_timezone(timezone)
+
     return not (local_time >= start_time or local_time < end_time)
 
 

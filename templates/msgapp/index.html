@@ -1,13 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
+<div id="formerrors" style="color: red;text-align: left"></div>
+
 <div class="container-fluid form_container">
    <h2>Name Reminder:</h2>
-   <form method="post" action="" autocomplete="off">
-      <input class="form-control input-lg" type="text" name ="name" placeholder="Name"></br>
-      <input class="form-control input-lg" type="phone" name ="phone" placeholder="Phone Number with country code. Ex +919191919000" ></br>
+   <form method="post" action="" name="reminderform" onsubmit="return validate()" autocomplete="off">
+      <input class="form-control input-lg" type="text" name ="name" placeholder="Name" onfocus="clearError()"></br>
+      <input class="form-control input-lg" type="phone" name ="phone" placeholder="Mobile Number" onfocus="clearError()"></br>
             <div style="text-align: center;display: flex; justify-content: space-between; padding: 0 10px 0 10px;">
          <div style="display: inline;">
-         <h3>Timezone </h3>
+         <h3>Timezone</h3>
          <select class="form-control input-lg" name="timezone">
             <option value="Asia/Kolkata">Asia/Kolkata</option>
             <option value="US/Eastern">US/Eastern</option>
@@ -17,7 +19,7 @@
          </div>
          <div style="display: inline;">
          <h3>Country Code</h3>
-         <input style="text-align: center;" class="form-control input-lg" type="text" name ="country_code" value="+91" onclick="this.select()">
+         <input style="text-align: center;" class="form-control input-lg" type="text" name ="country_code" value="+91" onclick="this.select()" onfocus="clearError()">
          </div>
       </div>
       <div style="text-align: center;">
@@ -25,11 +27,11 @@
          <div style="display: flex; justify-content: space-between; padding: 0 10px 0 10px;">
          <div style="display: inline;">
             <h3>Start</h3>
-            <input class="form-control input-lg col-s-3" type="time" name ="start_time" value="22:00" onclick="this.select()">
+            <input class="form-control input-lg col-s-3" type="time" name ="start_time" value="22:00" onclick="this.select()" onfocus="clearError()">
             </div>
             <div style="display: inline;">
             <h3>End</h3>
-            <input class="form-control input-lg col-s-3" type="time" name ="end_time" value="06:00" onclick="this.select()">
+            <input class="form-control input-lg col-s-3" type="time" name ="end_time" value="06:00" onclick="this.select()" onfocus="clearError()">
             </div>
          </div>
       </div>
@@ -39,4 +41,65 @@
       </div>
    </form>
 </div>
+
+<script type="text/javascript">
+  function validate() {
+    var phonenum = reminderform.phone.value
+    var name = reminderform.name.value
+    var countryCode = reminderform.country_code.value
+    var endTime = reminderform.end_time.value
+    var startTime = reminderform.start_time.value
+    document.getElementById('formerrors').innerHTML=""
+    var errorArr = []
+    if(name == null || name == ""){
+         errorArr.push("Empty name field")
+         //document.getElementById('formerrors').innerHTML = "Empty name field";
+    }
+    if(countryCode == null || countryCode == ""){
+         errorArr.push("Empty country code field")
+         //document.getElementById('formerrors').innerHTML = "Empty country code field";
+    }
+    if(startTime == endTime){
+         errorArr.push("Night Mode start and end time can't be same.")
+    }
+    if(isNaN(phonenum)){
+        var msg = "Invalid Number. Mobile number should only contain digits."
+        errorArr.push(msg)
+        //document.getElementById('formerrors').innerHTML=msg;
+    }
+    if(phonenum.length <= 9){
+        var msg = "Invalid Number. Mobile number should be 10 or more characters"
+        errorArr.push(msg)
+        //document.getElementById('formerrors').innerHTML=msg;
+    }
+
+    if (errorArr.length > 0){
+      document.getElementById('formerrors').className = 'form_container'
+      document.getElementById('formerrors').appendChild(createList(errorArr));
+      console.log(errorArr)
+      return false
+    }
+  }
+
+   function createList(msgArray){
+      var list = document.createElement('ul');
+      for(var i = 0; i < msgArray.length; i++) {
+         // Create the list item:
+         var item = document.createElement('li');
+
+         // Set its contents:
+         item.appendChild(document.createTextNode(msgArray[i]));
+
+         // Add it to the list:
+         list.appendChild(item);
+      }
+      return list;
+   }
+
+  function clearError() {
+    document.getElementById('formerrors').innerHTML="";
+    document.getElementById('formerrors').className="";
+  }
+</script>
+
 {% endblock %}
