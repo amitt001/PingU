@@ -9,26 +9,18 @@ import utils
 from models import User, Reminder, db
 
 
-#Twilio test credentials
-_FROM = "+15005550006"
-_ASID = "ACde3d9f8915e7be40163284f38b02849b"
-_TOKEN = "9468671c1999c05c0e4af55bec5bdf6e"
-#no retries in case of exception
-_RETRY = 5
-
-
-def send_reminder(to, body):
+def send_reminder(to, body, RETRY, FROM, ASID, TOKEN):
     """Send message using twilio"""
-    client = TwilioRestClient(_ASID, _TOKEN)
+    client = TwilioRestClient(ASID, TOKEN)
     counter = 1
     success = False
 
     #Try resending an SMS if it fails, but retry no more than 5 times.
     error_code, error_message = None, None
-    while counter <= _RETRY and success is False:
+    while counter <= RETRY and success is False:
         counter += 1
         try:
-            message = client.messages.create(to=to, from_=_FROM,
+            message = client.messages.create(to=to, from_=FROM,
                                              body=body)
             if message.error_code == None:
                 success = True
@@ -37,6 +29,9 @@ def send_reminder(to, body):
         except twilio.rest.exceptions.TwilioRestException as e:
             error_code = e.code
             error_message = e.msg
+        except Exception as e: #for all other exception
+            error_code = -1
+            error_message = e
 
     print error_code, error_message
     return (error_code is None, error_message or "")
@@ -55,7 +50,6 @@ def right_time(user):
 
     #Get user's timezon's local time
     local_time = utils.local_from_timezone(timezone)
-
     return not (local_time >= start_time or local_time < end_time)
 
 
@@ -65,6 +59,7 @@ if __name__ == '__main__' and __package__ is None:
     sys.path.append(path.dirname(path.dirname(path.abspath(__file__))))
     
     #set flaslkapp context for sqlalchemy
+    import settings
     from app import app
     db.app = app
 
@@ -73,7 +68,12 @@ if __name__ == '__main__' and __package__ is None:
     if right_time(user): 
         message = "Hello there! Your name is " + user.name
         phone_num = user.country_code + phone
-        success, error = send_reminder(phone_num, message)
+        success, error = send_reminder(
+                            phone_num, message,
+                            settings.RETRY,
+                            settings.FROM,
+                            settings.ASID,
+                            settings.TOKEN)
 
         rem = Reminder(phone, success, error, message)
         db.session.add(rem)

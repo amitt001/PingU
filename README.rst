@@ -25,7 +25,9 @@ print testout
 How to run?
 ============
 
-while you are in the root directory of project run
+1. Edit Settings.py file for twilio and other configuration
+
+2. While you are in the root directory of project run
     
     sudo sh setup.sh
 
@@ -39,7 +41,7 @@ OR
 
 * Create DB by "CREATE DATABASE msgapp;"
 
-* runt "python app.py"
+* run "python app.py"
 
 
 Architecture:
@@ -48,7 +50,7 @@ Architecture:
 Technology:
 ============
 
-Language: Python
+Language: Python, JS, HTML, CSS
 
 Framework: Flask, Bootstrap
 
@@ -131,8 +133,9 @@ Code Structure:
 
             ├── info.html
 
-            └── reminder_info.html
+            ├── reminder_info.html
 
+            └── 404.html
 
 Challenege:
 ============

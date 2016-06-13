@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Starting python package installation..."
-#pip install -r requirements.txt
+pip install -r requirements.txt
 
 
 # check mysql is present
@@ -12,3 +12,5 @@ sudo service mysql status >/dev/null 2>&1 && echo "Check MySQL: Done" || echo $F
 echo "Creating database. Enter password when prompted for."
 echo "create database msgapp" | mysql -u root -p
 
+echo "Starting app..."
+python app.py
