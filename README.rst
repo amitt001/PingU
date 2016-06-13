@@ -161,6 +161,12 @@ Challenege:
 
 4. The web application should also log all the failed messages and tell John for how many hours the application has been running. `Screenshot2 <screenshots/chall2.png>`_
 
+.. image:: screenshots/error.png
+    :height: 300px
+    :width: 400px
+    :alt: Error log
+    :align: center
+
 
 Do not send message during night: `Source Code <https://github.com/amitt001/PingU/blob/master/msgapp/messenger.py#L42>`_ , `Nightmode <screenshots/nightmode.png>`_
 
@@ -169,3 +175,4 @@ Do not send message during night: `Source Code <https://github.com/amitt001/Ping
     :width: 400px
     :alt: Nightmode on
     :align: center
+
